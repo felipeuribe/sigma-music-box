@@ -14,7 +14,7 @@
         </div>        
         <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">                
             <P>
-                Seguro Desea Actualizar La Imagen Del album
+                <h4>Seguro Desea Actualizar La Imagen Del Album <span class="label label-default">{{album.name}}</span></h4>
             </P>
             <form action="{{url('album/changeimage')}}/{{album.idAlbum}}" method="post" enctype="multipart/form-data">
                 

@@ -14,7 +14,7 @@
         </div>        
         <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">                
             <P>
-                Seguro Desea Actualizar La Imagen Del Genero
+               <h4>Seguro Desea Actualizar La Imagen Del Genero <span class="label label-default">{{gender.name}}</span></h4>
             </P>
             <form action="{{url('gender/changeimage')}}/{{gender.idGender}}" method="post" enctype="multipart/form-data">
                 

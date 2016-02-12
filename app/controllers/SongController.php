@@ -34,9 +34,6 @@ class SongController extends Controller{
                 else if (!is_numeric($number)) {
                     $this->flashSession->error('No haz enviado un Numero Valido para identificar de la Cancion, por favor verifica la información');
                 }
-                else if (empty($year)) {
-                    $this->flashSession->error('No haz enviado un Año para identificar la Cancion, por favor verifica la información');
-                }
                 else if (empty($duration)) {
                     $this->flashSession->error('No haz enviado una Duracion para identificar la Cancion, por favor verifica la información');
                 }
@@ -44,8 +41,7 @@ class SongController extends Controller{
 
                     $song = new Song();
                     $song->name = $name;
-                    $song->numberTracks = $numberTracks;
-                    $song->year = $year;
+                    $song->numberTracks = $numberTracks;                   
                     $song->duration = $duration;
 
                     $song->createdon = time();
@@ -58,7 +54,7 @@ class SongController extends Controller{
                         }
                     }
                     else {
-                        $this->flashSession->success("Se Inserto Exitosamente");
+                        $this->flashSession->success("Se ha creado la Cancion exitosamente");
                         $this->response->redirect('song/list');
                     }  
                 }

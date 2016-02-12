@@ -29,12 +29,7 @@
                     <label for="name">Nombre del Album</label>
                     <input type="text" name="name" class="form-control" id="name" placeholder="Nombre del Albúm" required>
                 </div> 
-                    
-                <div class="form-group">
-                    <label for="name">Digite El Numero de Pistas del ALbum</label>
-                    <input type="text" name="numberTracks" class="form-control" id="numberTracks" placeholder="Numero De Pistas" required>
-                </div>
-                    
+                                    
                 <div class="form-group">
                     <label for="name">Digite El Año del Albúm</label>
                     <input type="text" name="year" class="form-control" id="year" placeholder="Año Del Albúm" required>
@@ -45,14 +40,11 @@
                     <input type="file" name="album-cover" id="album-cover" required>
                     <p class="help-block">Jpg.</p>                    
                 </div>
-                    
-                <div class="form-group">
-                    <a href="{{url('album/list')}}" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
-                    <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-check"></i></button>                    
-                </div>
-                <div class="form-group">
-                    <p>.</p>
-                </div>
+                
+                <a href="{{url('album/list')}}" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
+                <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-check"></i></button>                    
+                
+                
                     
                  
                 

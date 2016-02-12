@@ -29,10 +29,10 @@
                     <thead> 
                         <tr>                                  
                             <th>ID </th> 
-                            <th>Name</th> 
-                            <th>Fecha</th>
-                            <th>Imagen</th>
-                            <th>Acciones</th>
+                            <th>Nombre</th> 
+                            <th>Fechas</th>
+                            <th>Imagen Del Genero</th>
+                            <th></th>
                         </tr> 
                     </thead> 
                     <tbody>

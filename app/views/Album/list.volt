@@ -26,12 +26,13 @@
                 <table class="table"> 
                     <thead> 
                         <tr>                                  
-                            <th>ID </th> 
-                            <th>Nombre</th> 
+                            <th>ID</th> 
+                            <th>Nombre Del Album</th> 
+                            <th>Nombre Del Artista</th> 
                             <th>Numeron De Pistas</th>
                             <th>Año de Creación</th>
-                            <th>Duración</th>
-                            <th>Fecha</th>
+                            <th>Duración </th>
+                            <th>Fechas </th>
                             <th>Imagen del Albúm</th>
                             <th></th>
                         </tr>  
@@ -41,13 +42,20 @@
                         <tr> 
                             <td>{{album.idAlbum}}</td> 
                             <td><strong> {{album.name}}</strong></td>
+                            <td>                                 
+                                {% for artist in artists %}
+                                    {% if artist.idArtist == album.idArtist %}
+                                        {{artist.name}} <br>
+                                    {% endif %}    
+                                {% endfor %}                                  
+                            </td>
                             <td><strong> {{album.numberTracks}}</strong></td>
                             <td><strong> {{album.year}}</strong></td>
                             <td><strong> {{album.duration}}</strong></td>
                             <td>
-                                Creado el: {{date('d-M-Y - H:i:s' , album.createdon)}} 
+                                Creado el: {{date('d-M-Y  ' , album.createdon)}} 
                                 <br> 
-                                Actualizado el: {{date('d-M-Y - H:i:s' , album.updatedon)}}
+                                Actualizado el: {{date('d-M-Y  ' , album.updatedon)}}
                             </td>
                             <td>
                                 <img class="album-cover-list" src="{{url('')}}assets/albumes/images/{{album.idAlbum}}/{{album.idAlbum}}.jpg">

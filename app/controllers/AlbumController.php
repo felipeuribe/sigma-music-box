@@ -12,6 +12,11 @@ class AlbumController extends Controller{
     public function ListAction(){
         $album = Album::find();
         $this->view->setVar("album", $album); 
+        
+        $artists = Artist::find();
+        $this->view->setVar("artists", $artists); 
+        
+       
     }
     
     public function newAction(){ 
@@ -33,9 +38,6 @@ class AlbumController extends Controller{
                 }
                 else if (empty($artist)) {
                     $this->flashSession->error('No ha enviado un artista para crear el albúm, por favor valide la información');
-                } 
-                else if (empty($numberTracks)) {
-                    $this->flashSession->error('No ha enviado el numero de pista para crear el Album, por favor valide la información');
                 }
                 else if (empty($year)) {
                     $this->flashSession->error('No ha enviado un Año para crear el Album, por favor valide la información');
@@ -94,6 +96,9 @@ class AlbumController extends Controller{
     }
    
     public function editAction($idAlbum){
+        $artists = Artist::find();
+        $this->view->setVar("artists", $artists);
+        
         $album = Album::findFirst(array(
             'conditions' => "idAlbum = ?1 ",
             'bind' => array(1 => $idAlbum)
@@ -106,19 +111,18 @@ class AlbumController extends Controller{
         
         $this->view->setVar("album", $album);
         
-        if ($this->request->isPost()) {
-            
+        if ($this->request->isPost()) {            
             try{
                 $name = $this->request->getPost("name");
                 $numberTracks = $this->request->getPost("numberTracks");
                 $year = $this->request->getPost("year");
+                $artist = $this->request->getPost("artist");
+                
                 
                 if(empty($name)){
                     $this->flashSession->error('No haz enviado un Nombre para identificar el Albúm, por favor verifica la información');
                 }                
-                else if (!is_numeric($numberTracks)) {
-                    $this->flashSession->error('No haz enviado un numero de Pistas para identificar el Album, por favor verifica la información');
-                }
+                
                 else if (empty($year)) {
                     $this->flashSession->error('No haz enviado un Año para identificar el Album, por favor verifica la información');
                 }
@@ -126,6 +130,7 @@ class AlbumController extends Controller{
                     $album->name = $name;
                     $album->numberTracks = $numberTracks;
                     $album->year = $year;
+                    $album->idArtist = $artist;
                     
                     $album->createdon = time();
                     $album->updatedon = time();
@@ -253,7 +258,5 @@ class AlbumController extends Controller{
             $this->logger->log("No Se pudo eliminar este archivo");
         }
     }
-
-    
     
 }
