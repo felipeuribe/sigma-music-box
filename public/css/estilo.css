@@ -1,0 +1,100 @@
+html{
+    overflow-x: hidden;
+    height: 100%
+}
+body {
+    height: 100%
+}
+.container-fluid {
+    height: 100%;
+    display: table;
+    min-height: 100%;
+    width: 100%;
+}
+.fill{
+    background-color:#990000;
+    color:#efefef;
+    height: 100%
+}
+.background-black{
+    background-color: black;
+}
+.background-titulo{
+    background-color: black;
+    height: 90px;
+    text-align: right;
+    color: white;
+    padding: 10px;
+    font-size: x-large;
+    border: 1px solid skyblue;
+}
+.background-final{    
+    height: 60px;
+}
+
+.background-logo{    
+    text-align: left;
+}
+.letra{
+    color: black;
+}
+.album-cover {
+    width: 100%;
+    height: 220px;
+    text-align: center;
+}
+.album-cover-list {
+    width: 50px;
+    height: 50px;
+}
+.logo2{
+    color: white;
+    text-align: center;
+}
+.widthselect{
+    width: 100px;
+}
+.header {
+    background-color: #990000;
+}
+
+.footer-menu {
+    position: fixed;
+    bottom: 0;
+    width: 66.7%;
+    border-top: 1px solid;
+    z-index: 99999999;
+    background-color: black;
+}
+
+.app-title {
+    text-align: left;
+    font-size: 2.2em;
+    font-weight: 600;
+}
+
+.app-title a {
+    color: white;
+}
+.float-left {
+    float: right;
+}
+
+.nav a {
+    color: white !important;
+}
+
+.nav a:hover {
+    color: black !important;
+}
+.gender_table{
+    width: 70%;
+}
+th{
+    text-align: center;
+}
+td{
+    text-align: center;
+}
+
+
