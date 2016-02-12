@@ -6,16 +6,15 @@ class AlbumController extends Controller{
     
     public function IndexAction(){
         $album = Album::find();        
-        $this->view->setVar("album", $album);
-        
-        
+        $this->view->setVar("album", $album);    
     }
+    
     public function ListAction(){
         $album = Album::find();
         $this->view->setVar("album", $album); 
     }
     
-    public function  newAction(){ 
+    public function newAction(){ 
         $artists = Artist::find();
         $this->view->setVar("artists", $artists);
         
@@ -96,7 +95,7 @@ class AlbumController extends Controller{
    
     public function editAction($idAlbum){
         $album = Album::findFirst(array(
-            'conditions' => "$idAlbum = ?1 ",
+            'conditions' => "idAlbum = ?1 ",
             'bind' => array(1 => $idAlbum)
         ));
         
@@ -138,7 +137,7 @@ class AlbumController extends Controller{
                     }
                     else {
                         $this->response->redirect('album/list');
-                        $this->flashSession->success("Se Modificado Exitosamente");
+                        $this->flashSession->success("Se Modificado El Album  Exitosamente");
                     }
                 }
             }
@@ -192,4 +191,69 @@ class AlbumController extends Controller{
         
          $this->view->setVar("idAlbum", $idAlbum);
     }
+    
+    public function changeimageAction($idAlbum){
+        $album = Album::findFirst(array(
+            'conditions' => "idAlbum = ?1 ",
+            'bind' => array(1 => $idAlbum)
+        ));
+        
+        
+        if (!$album) {
+            $this->flashSession->error('No Existe el codigo');
+            return $this->response->redirect("album/list");
+        }
+        
+        $this->view->setVar("album", $album);
+        
+        if ($this->request->isPost()) {            
+            try{
+                $permitidos = array("image/jpg");
+                $limite_kb = 800;
+                               
+                if ($_FILES["artist-cover"]["error"] > 0){
+                    $this->flashSession->error('No haz enviado una imagen para identificar el Album, por favor verifica la información');
+                }
+                else if (!in_array($_FILES['album-cover']['type'], $permitidos) && $_FILES['imagen']['size'] > $limite_kb * 1024){
+                    $this->flashSession->error('Haz enviado un tipo de imagen no soportado o una imagen demasiado pesada, la imagen debe pesar máximo 800 KB, por favor verifica la información');
+                }
+                else {
+                    if (!$album->save()) {
+                        foreach ($album->getMessages() as $msg) {
+                            $this->logger->log($msg);        
+                        }
+                    }
+                    else {
+                        $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/albumes/images/" . $album->idAlbum . "/" . $album->idAlbum . ".jpg";
+                        $this->deleteFolder($dir);
+                        
+                        $ruta = $dir .  ".jpg";
+
+                        $resultado = @move_uploaded_file($_FILES["album-cover"]["tmp_name"], $ruta);
+
+                        if (!$resultado){
+                            $this->flashSession->error("No se ha podido crear el Albúm, por favor contacta al administrador");
+                            return $this->response->redirect("artist/edit");
+                        }
+                        
+                        $this->flashSession->success("Se ha Modificado La Imagen Del  Albúm Exitosamente.");
+                        return $this->response->redirect("album/list");                       
+                    }
+                }
+            }
+            catch (Exception $ex){
+                $this->flashSession->error("Ha Ocurrido Un Error Al Editar El Artista");
+                $this->response->redirect('album/changeimage');
+            }
+        } 
+    }
+    
+    private function deleteFolder($dir){
+        if (!unlink($dir)){
+            $this->logger->log("No Se pudo eliminar este archivo");
+        }
+    }
+
+    
+    
 }

@@ -11,8 +11,7 @@
     <div  class="row">            
         <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">                
             <P>
-                Sí elimina este género, ya no podrá recuperar los datos, también es posible que no pueda
-                eliminarlo si esta relacionado con un artista.
+                Sí elimina este Género, Ya no podrá recuperar los datos de los Artistas Relacionados con este Genero.
                 <br>
                 ¿Esta seguro que desea eliminar este género?
             </P>

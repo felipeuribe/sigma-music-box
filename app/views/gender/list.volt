@@ -49,6 +49,9 @@
                                 <img class="album-cover-list" src="{{url('')}}assets/genders/images/{{gender.idGender}}/{{gender.idGender}}.jpg">
                             </td> 
                             <td>
+                                <a href="{{url('gender/changeimage')}}/{{gender.idGender}}" class="btn btn-xs btn-success">
+                                    <span class="fa fa-picture-o"></span>
+                                </a>
                                 <a href="{{url('gender/edit')}}/{{gender.idGender}}" class="btn btn-xs btn-primary">
                                     <span class="fa fa-pencil"></span>
                                 </a> 

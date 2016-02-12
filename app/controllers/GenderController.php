@@ -76,7 +76,17 @@ class GenderController extends Controller{
             'bind' => array(1 => $idGender)
         ));
         
-        if (!$gender) {
+        $gxas = Genderxartist::find(array(
+            'conditions' => "idGender = ?1 ",
+            'bind' => array(1 => $idGender)
+        )); 
+        
+        if (!$gxas->delete()) {
+            foreach ($gxas->getMessages() as $msg) {
+                $this->logger->log($msg);        
+            }
+        } 
+        else if (!$gender) {
             $this->flashSession->error('No Existe el codigo');
             return $this->response->redirect("gender/list");
         }
@@ -91,7 +101,7 @@ class GenderController extends Controller{
                     $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/genders/images/" . $gender->idGender . "/" . $gender->idGender . ".jpg";
                     $this->deleteFolder($dir);                     
                     $this->response->redirect('gender/list');
-                    $this->flashSession->error("Se Elimino Exitosamente");
+                    $this->flashSession->error("Se Elimino El Album Exitosamente");
                 }  
         }
         catch (Exception $ex){
@@ -115,14 +125,50 @@ class GenderController extends Controller{
         
          $this->view->setVar("idGender", $idGender);
     }
-    
-    private function deleteFolder($dir){
-        if (!unlink($dir)){
-            $this->logger->log("No Se pudo eliminar este archivo");
+   
+    public function editAction($idGender){
+        $gender = Gender::findFirst(array(
+            'conditions' => "idGender = ?1 ",
+            'bind' => array(1 => $idGender)
+        ));
+        
+        if (!$gender) {
+            $this->flashSession->error('No Existe el codigo');
+            return $this->response->redirect("gender");
         }
+        
+        $this->view->setVar("gender", $gender);
+        
+        if ($this->request->isPost()) {            
+            try{                               
+                $name = $this->request->getPost("name");
+                                
+                if( empty($name)){
+                    $this->flashSession->error('No haz enviado un Nombre para identificar el Genero, por favor verifica la información');
+                }
+                else {
+                    $gender->name = $name;                    
+                    $gender->updatedon = time();
+                    
+                    if (!$gender->save()) {
+                        foreach ($gender->getMessages() as $msg) {
+                            $this->logger->log($msg);        
+                        }
+                    }
+                    else {                      
+                        $this->flashSession->success("Se ha Modificado El Género Exitosamente");
+                        return $this->response->redirect("gender/list"); 
+                    }
+                }
+            }
+            catch (Exception $ex){
+                $this->flashSession->error("Ha Ocurrido Un Error");
+                $this->response->redirect('gender/edit');
+            }
+        }   
     }
     
-     public function editAction($idGender){
+    public function changeimageAction($idGender){
         $gender = Gender::findFirst(array(
             'conditions' => "idGender = ?1 ",
             'bind' => array(1 => $idGender)
@@ -140,12 +186,8 @@ class GenderController extends Controller{
                 $permitidos = array("image/jpg");
                 $limite_kb = 800;
                 
-                $name = $this->request->getPost("name");
-                                
-                if( empty($name)){
-                    $this->flashSession->error('No has enviado el nombre');
-                }
-                else if ($_FILES["gender-cover"]["error"] > 0){
+                
+                if ($_FILES["gender-cover"]["error"] > 0){
                     $this->flashSession->error('No haz enviado una imagen para identificar el género, por favor verifica la información');
                 }
                 else if (!in_array($_FILES['gender-cover']['type'], $permitidos) && $_FILES['imagen']['size'] > $limite_kb * 1024){
@@ -153,9 +195,7 @@ class GenderController extends Controller{
                 }
                 
                 else {
-                    $gender->name = $name;                    
-                    $gender->updatedon = time();
-                    
+                                       
                     if (!$gender->save()) {
                         foreach ($gender->getMessages() as $msg) {
                             $this->logger->log($msg);        
@@ -186,4 +226,9 @@ class GenderController extends Controller{
         }   
     }
     
+    private function deleteFolder($dir){
+        if (!unlink($dir)){
+            $this->logger->log("No Se pudo eliminar este archivo");
+        }
+    }
 }

@@ -14,13 +14,7 @@
             <form action="{{url('gender/edit')}}/{{gender.idGender}}" method="post" enctype="multipart/form-data">
                 <label for="name">Nuevo Genero</label>
                 <input type="text" name="name" class="form-control" id="name" value="{{gender.name}}" >
-                <br> 
-                <div class="form-group">
-                  <label for="gender-cover">Selecciona la Nueva imagen del género</label>
-                  <input type="file" name="gender-cover" id="gender-cover" >
-                  <p class="help-block">Jpg.</p>
-                </div>
-                
+                <br>
                 <a href="{{url('gender/list')}}" class="btn btn-sm btn-danger"><i class="fa fa-times"> </i></a>
                 <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-check" {{url('gender/list')}}></i>
                 

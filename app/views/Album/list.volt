@@ -28,11 +28,12 @@
                         <tr>                                  
                             <th>ID </th> 
                             <th>Nombre</th> 
-                            <th>Numero</th>
+                            <th>Numeron De Pistas</th>
                             <th>Año de Creación</th>
                             <th>Duración</th>
                             <th>Fecha</th>
-                            <th>Acciones</th>
+                            <th>Imagen del Albúm</th>
+                            <th></th>
                         </tr>  
                     </thead> 
                     <tbody>
@@ -47,8 +48,14 @@
                                 Creado el: {{date('d-M-Y - H:i:s' , album.createdon)}} 
                                 <br> 
                                 Actualizado el: {{date('d-M-Y - H:i:s' , album.updatedon)}}
-                            </td>                              
+                            </td>
                             <td>
+                                <img class="album-cover-list" src="{{url('')}}assets/albumes/images/{{album.idAlbum}}/{{album.idAlbum}}.jpg">
+                            </td> 
+                            <td>
+                                <a href="{{url('album/changeimage')}}/{{album.idAlbum}}" class="btn btn-xs btn-success">
+                                    <span class="fa fa-picture-o"></span>
+                                </a>
                                 <a href="{{url('album/edit')}}/{{album.idAlbum}}" class="btn btn-xs btn-primary">
                                     <span class="fa fa-pencil"></span>
                                 </a> 

@@ -30,22 +30,38 @@
                             <th>Nombre</th> 
                             <th>Pais</th>
                             <th>Fecha</th>
+                            <th>Género</th>
+                            <th>Imagen Del Artista</th>
                             <th> </th>
                         </tr> 
                     </thead> 
                     <tbody>
-                {% for artist in artist %}
+                {% for artist in artists %}
                         <tr> 
                             <td>{{artist.idArtist}}</td> 
                             <td><strong> {{artist.name}}</strong></td>
-                            <td><strong> {{artist.country}}</strong></td>
+                            <td> {{artist.country}}</td>
                             <td>
                                 Creado el: {{date('d-M-Y - h:i:s A' , artist.createdon)}} 
                                 <br> 
                                 Actualizado el: {{date('d-M-Y - h:i:s A' , artist.updatedon)}}
-                            </td>                              
+                            </td>
                             <td>
-                                <a href="{{url('artist/edit')}}/{{artist.idArtist}}" class="btn btn-xs btn-success">
+                                {% for gxa in gxas %}
+                                    {% if gxa.idArtist == artist.idArtist %}
+                                        {% for gender in genders %}
+                                            {% if gender.idGender == gxa.idGender %}
+                                                {{gender.name}} <br>
+                                            {% endif %}    
+                                        {% endfor %}
+                                    {% endif %}    
+                                {% endfor %} 
+                            </td>
+                            <td>
+                                <img class="album-cover-list" src="{{url('')}}assets/artists/images/{{artist.idArtist}}/{{artist.idArtist}}.jpg">
+                            </td>
+                            <td>
+                                <a href="{{url('artist/changeimage')}}/{{artist.idArtist}}" class="btn btn-xs btn-success">
                                     <span class="fa fa-picture-o"></span>
                                 </a>
                                 <a href="{{url('artist/edit')}}/{{artist.idArtist}}" class="btn btn-xs btn-primary">

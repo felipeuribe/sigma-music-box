@@ -27,8 +27,10 @@
                 <input type="text" name="year" class="form-control" id="year" value="{{album.year}}" >
                 <br>
                 
-                <input class="btn btn-primary" type="submit" value="Enviar">
-                <a href="{{url('album/list')}}" class="btn btn-primary">Atras</a>
+                <a href="{{url('album/list')}}" class="btn btn-sm btn-danger"><i class="fa fa-times"> </i></a>
+                <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-check" {{url('album/edit')}}></i>
+                
+                
             </form>
         </div>
     </div>

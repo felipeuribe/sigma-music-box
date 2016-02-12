@@ -38,15 +38,10 @@
                     <label for="artist-cover">Selecciona la imagen del Artista</label>
                     <input type="file" name="artist-cover" id="artist-cover" required>
                     <p class="help-block">Jpg.</p>                    
-                </div>                
-                <div class="form-group">
-                    <a href="{{url('artist/list')}}" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
-                    <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-check"></i></button>                    
-                </div>
-                <div class="form-group">
-                    <p>.</p>
-                </div>
-                    
+                </div>             
+               
+                <a href="{{url('artist/list')}}" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
+                <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-check"></i></button>                          
             </form>  
         </div>
     </div>
