@@ -7,6 +7,31 @@ class ArtistController extends Controller{
     public function IndexAction(){
         $artist = Artist::find();
         $this->view->setVar("artist", $artist);
+        
+        
+        
+    }
+    public function artistalbumAction($idArtist){
+                
+        // todos los albumes de un artista 
+        $albums = Album::find(array(
+            'conditions' => "idArtist = ?1 ",
+            'bind' => array(1 => $idArtist)
+        ));
+        
+        $songs = array();
+        
+        foreach ($albums as $album) {
+            $s = Song::find(array(
+                'conditions' => "idAlbum = ?1 ",
+                'bind' => array(1 => $album->idAlbum)
+            ));
+            
+            $songs[] = $s;
+        }
+        
+        $this->view->setVar("albums", $albums);
+        $this->view->setVar("arraySongs", $songs);
     }
     
     public function ListAction(){
@@ -37,13 +62,13 @@ class ArtistController extends Controller{
                     $this->flashSession->error('No ha enviado el nombre para crear el artista, por favor valide la información');
                 }
                 else if (empty($country)) {
-                    $this->flashSession->error('No ha enviado un el pais para crear el artista, por favor valide la información');
+                    $this->flashSession->error('No ha enviado  el pais para crear el artista, por favor valide la información');
                 }
                 else if (count($genders) <= 0) {
-                    $this->flashSession->error('No ha enviado un género para crear el artista, por favor valide la información');
+                    $this->flashSession->error('No ha enviado un Género para crear el artista, por favor valide la información');
                 }
                 else if ($_FILES["artist-cover"]["error"] > 0){
-                    $this->flashSession->error('No haz enviado una imagen para identificar el Artista, por favor verifica la información');
+                    $this->flashSession->error('No haz enviado una Imagen para identificar el Artista, por favor verifica la información');
                 }
                 else if (!in_array($_FILES['artist-cover']['type'], $permitidos) && $_FILES['imagen']['size'] > $limite_kb * 1024){
                     $this->flashSession->error('Haz enviado un tipo de imagen no soportado o una imagen demasiado pesada, la imagen debe pesar máximo 800 KB, por favor verifica la información');
@@ -77,7 +102,7 @@ class ArtistController extends Controller{
                         $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/artists/images/" . $artist->idArtist . "/" ;
 
                         if(!mkdir($dir, 0777, true)) {
-                            $this->flashSession->error("No se ha podido crear el directorio del género, por favor contacta al administrador");
+                            $this->flashSession->error("No se ha podido crear el directorio del Artista, por favor contacta al administrador");
                             return $this->response->redirect("artist/new");
                         }
 
@@ -104,14 +129,13 @@ class ArtistController extends Controller{
     }
  
     public function editAction($idArtist){
-        $genders = Gender::find();
-        $this->view->setVar("genders", $genders);
-        
-        
         $artist = Artist::findFirst(array(
             'conditions' => "idArtist = ?1 ",
             'bind' => array(1 => $idArtist)
         ));
+        
+        $genders = Gender::find();
+        $this->view->setVar("genders", $genders);
         
         $gxas = Genderxartist::find(array(
             'conditions' => "idArtist = ?1 ",
@@ -169,7 +193,7 @@ class ArtistController extends Controller{
                             }                            
                         }
                         $this->response->redirect('artist/list');
-                        $this->flashSession->success("Se Modificado El Artista Exitosamente");
+                        $this->flashSession->notice("Se Modificado El Artista Exitosamente");
                     }
                 }
             }
@@ -187,56 +211,74 @@ class ArtistController extends Controller{
         ));
         
         if (!$artist) {
-            $this->flashSession->error('No Existe el codigo');
+            $this->flashSession->error('No Existe el codigo por favor validar ');
             return $this->response->redirect("artist");
         } 
         $this->view->setVar("idArtist", $idArtist);
     }
     
     public function deleteAction($idArtist){
-        $artist = Artist::findFirst(array(
-            'conditions' => "idArtist = ?1 ",
-            'bind' => array(1 => $idArtist)
-        ));
-        
-        $album = Album::find(array(
-            'conditions' => "idArtist = ?1 ",
-            'bind' => array(1 => $idArtist)
-        ));
-        
-        $gxas = Genderxartist::find(array(
-            'conditions' => "idArtist = ?1 ",
-            'bind' => array(1 => $idArtist)
-        ));
-        
-        if (!$artist) {
-            $this->flashSession->error('No Existe el codigo Del Artista');
-            return $this->response->redirect("artist");
-        }
-        
         try {
+            $artist = Artist::findFirst(array(
+                'conditions' => "idArtist = ?1 ",
+                'bind' => array(1 => $idArtist)
+            ));
             
-            if (!$album->delete()) {
-                foreach ($album->getMessages() as $msg) {
+            if (!$artist) {
+                $this->flashSession->error('No Existe el codigo Por favor validar');
+                return $this->response->redirect("artist");
+            }
+        
+            $albums = Album::find(array(
+                'conditions' => "idArtist = ?1 ",
+                'bind' => array(1 => $idArtist)
+            ));
+
+            foreach ($albums as $album) {
+                $songs = Song::find(array(
+                    'conditions' => "idAlbum = ?1 ",
+                    'bind' => array(1 => $album->idAlbum)
+                ));
+
+                foreach ($songs as $song) {
+                    if (!$song->delete()) {
+                        foreach ($song->getMessages() as $msg) {
+                            $this->logger->log($msg);        
+                        }
+                    }  
+                }
+                
+                if (!$album->delete()) {
+                    foreach ($album->getMessages() as $msg) {
+                        $this->logger->log($msg);        
+                    }
+                }  
+            }
+            
+            $gxas = Genderxartist::find(array(
+                'conditions' => "idArtist = ?1 ",
+                'bind' => array(1 => $idArtist)
+            ));
+            
+            if (!$gxas->delete()) {
+                foreach ($gxas->getMessages() as $msg) {
                     $this->logger->log($msg);        
                 }
-            }            
+            }
             else if (!$artist->delete()) {
                 foreach ($artist->getMessages() as $msg) {
                     $this->logger->log($msg);        
                 }
             }
-            else if (!$gxas->delete()) {
-                foreach ($gxas->getMessages() as $msg) {
-                    $this->logger->log($msg);        
-                }
-            }
             else {
                 $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/artists/images/" . $artist->idArtist . "/" . $artist->idArtist . ".jpg";
-                $this->deleteFolder($dir);                     
-                $this->response->redirect('artist/list');
-                $this->flashSession->error("Se Elimino El Artista Exitosamente");
+                $this->deleteFolder($dir);
                 
+                $dir1 = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/artists/images/" . $artist->idArtist ;
+                $this->deleteDirectory($dir1);
+                
+                $this->response->redirect('artist/list');
+                $this->flashSession->error("Se Eliminó El Artista Exitosamente"); 
             }  
         }
         catch (Exception $ex){
@@ -254,7 +296,7 @@ class ArtistController extends Controller{
         ));
         
         if (!$artist) {
-            $this->flashSession->error('No Existe el codigo');
+            $this->flashSession->error('No Existe el codigo por favor validar');
             return $this->response->redirect("artist/list");
         }
         
@@ -290,7 +332,7 @@ class ArtistController extends Controller{
                             return $this->response->redirect("artist/edit");
                         }
                         
-                        $this->flashSession->success("Se ha Modificado La Imagen Del  Artista Exitosamente.");
+                        $this->flashSession->notice("Se ha Modificado La Imagen Del  Artista Exitosamente.");
                         return $this->response->redirect("artist/list");                        
                        
                         
@@ -306,6 +348,12 @@ class ArtistController extends Controller{
     
     private function deleteFolder($dir){
         if (!unlink($dir)){
+            $this->logger->log("No Se pudo eliminar este archivo");
+        }
+    }
+    
+    private function deleteDirectory($dir1){
+        if (!rmdir($dir1)){
             $this->logger->log("No Se pudo eliminar este archivo");
         }
     }

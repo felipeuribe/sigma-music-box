@@ -27,17 +27,17 @@
                 
                 <div class="form-group">
                     <label for="name">Nombre del Album</label>
-                    <input type="text" name="name" class="form-control" id="name" placeholder="Nombre del Albúm" required>
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Nombre del Albúm" >
                 </div> 
                                     
                 <div class="form-group">
                     <label for="name">Digite El Año del Albúm</label>
-                    <input type="text" name="year" class="form-control" id="year" placeholder="Año Del Albúm" required>
+                    <input type="text" name="year" class="form-control" id="year" placeholder="Año Del Albúm" >
                 </div>
                     
                 <div class="form-group">
                     <label for="album-cover">Selecciona la imagen del Albúm</label>
-                    <input type="file" name="album-cover" id="album-cover" required>
+                    <input type="file" name="album-cover" id="album-cover" >
                     <p class="help-block">Jpg.</p>                    
                 </div>
                 

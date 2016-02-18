@@ -98,3 +98,24 @@ td{
 }
 
 
+.album-header-cover {
+    width: 100px;
+    display: inline;
+}
+
+.album-header-name {
+    display: inline;
+    font-size: 3em;
+    margin: 16px;
+}
+
+.loginbox{
+    margin-top:50px;
+}
+
+.panel-body-bor{
+    padding-top:30px
+}
+.input-group-login{
+    margin-bottom: 25px
+}

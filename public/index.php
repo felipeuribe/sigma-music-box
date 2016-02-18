@@ -70,6 +70,14 @@ try {
         return $session;
     });
     
+    
+    $di->setShared('hash', function () {
+        $security = new \Phalcon\Security();
+        // Set the password hashing factor to 12 rounds
+        $security->setWorkFactor(12);
+        return $security;
+    });
+    
     // Módulo de mensajes
     $di->set('flashSession', function () {
         $flash = new Phalcon\Flash\Session(

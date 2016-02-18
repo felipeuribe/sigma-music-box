@@ -9,6 +9,30 @@ class AlbumController extends Controller{
         $this->view->setVar("album", $album);    
     }
     
+     public function albumsongAction($idAlbum){
+         
+        // todos los albumes de un artista 
+        $albums = Album::find(array(
+            'conditions' => "idAlbum = ?1 ",
+            'bind' => array(1 => $idAlbum)
+        ));
+        
+        $songs = array();
+        
+        foreach ($albums as $album) {
+            $s = Song::find(array(
+                'conditions' => "idAlbum = ?1 ",
+                'bind' => array(1 => $album->idAlbum)
+            ));
+            
+            $songs[] = $s;
+        }
+        
+        $this->view->setVar("albums", $albums);
+        $this->view->setVar("arraySongs", $songs);
+        
+    }
+    
     public function ListAction(){
         $album = Album::find();
         $this->view->setVar("album", $album); 
@@ -43,9 +67,9 @@ class AlbumController extends Controller{
                     $this->flashSession->error('No ha enviado un Año para crear el Album, por favor valide la información');
                 }
                 else if ($_FILES["album-cover"]["error"] > 0){
-                    $this->flashSession->error('No haz enviado una imagen para identificar el Albúm, por favor verifica la información');
+                    $this->flashSession->error('No haz enviado una Imagen para identificar el Albúm, por favor verifica la información');
                 }
-                else if (!in_array($_FILES['album-cover']['type'], $permitidos) && $_FILES['imagen']['size'] > $limite_kb * 1024){
+                else if (!in_array($_FILES['album-cover']['type'], $permitidos) && $_FILES['album-cover']['size'] > $limite_kb * 1024){
                     $this->flashSession->error('Haz enviado un tipo de imagen no soportado o una imagen demasiado pesada, la imagen debe pesar máximo 800 KB, por favor verifica la información');
                 }
                 else{
@@ -69,7 +93,7 @@ class AlbumController extends Controller{
                         $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/albumes/images/" . $album->idAlbum . "/" ;
 
                         if(!mkdir($dir, 0777, true)) {
-                            $this->flashSession->error("No se ha podido crear el directorio del género, por favor contacta al administrador");
+                            $this->flashSession->error("No se ha podido crear el directorio del album, por favor contacta al administrador");
                             return $this->response->redirect("album/new");
                         }
 
@@ -82,13 +106,13 @@ class AlbumController extends Controller{
                             return $this->response->redirect("album/new");
                         }
                         
-                        $this->flashSession->success("Se ha creado el género exitosamente");
+                        $this->flashSession->success("Se ha creado el Album exitosamente");
                         return $this->response->redirect("album/list");
                     } 
                 }
             }
             catch (Exception $ex){
-                $this->flashSession->error("No se han podido guardar los datos del artista, por favor contacta al administrador");
+                $this->flashSession->error("No se han podido guardar los datos del Album, por favor contacta al administrador");
                 $this->logger->log("Exception while saving artist: {$ex->getTraceAsString()} {$ex->getMessage()}");
                 return $this->response->redirect('album/list');
             }
@@ -105,7 +129,7 @@ class AlbumController extends Controller{
         ));
         
         if (!$album) {
-            $this->flashSession->error('No Existe el codigo validar por Favor');
+            $this->flashSession->error('No Existe el codigo valide La Informacion');
             return $this->response->redirect("album/list");
         }
         
@@ -142,12 +166,12 @@ class AlbumController extends Controller{
                     }
                     else {
                         $this->response->redirect('album/list');
-                        $this->flashSession->success("Se Modificado El Album  Exitosamente");
+                        $this->flashSession->notice("Se Modificado El Album  Exitosamente");
                     }
                 }
             }
             catch (Exception $ex){
-                $this->flashSession->error("Ha Ocurrido Un Error");
+                $this->flashSession->error("Ha Ocurrido Un Error con el Album");
                 return $this->response->redirect('album/list');
               
             }
@@ -155,25 +179,41 @@ class AlbumController extends Controller{
     }
     
     public function deleteAction($idAlbum){
+        
         $album = Album::findFirst(array(
             'conditions' => "idAlbum = ?1 ",
             'bind' => array(1 => $idAlbum)
         ));
         
-        if (!$album) {
-            $this->flashSession->error('No Existe el codigo El Albúm');
-            return $this->response->redirect("album");
-        }
+        $song = Song::find(array(
+            'conditions' => "idAlbum = ?1 ",
+            'bind' => array(1 => $idAlbum)
+        ));
         
+        if (!$album) {
+            $this->flashSession->error('No Existe el codigo del Albúm');
+            return $this->response->redirect("album");
+        }        
         try {            
             if (!$album->delete()) {
                 foreach ($album->getMessages() as $msg) {
                     $this->logger->log($msg);        
                 }
             }
+            else if (!$song->delete()) {
+                foreach ($song->getMessages() as $msg) {
+                    $this->logger->log($msg);        
+                }
+            }
             else {
+                $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/albumes/images/" . $album->idAlbum . "/" . $album->idAlbum . ".jpg";
+                $this->deleteFolder($dir);
+                
+                $dir1 = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/albumes/images/" . $album->idAlbum ;
+                $this->deleteDirectory($dir1);
+                    
                 $this->response->redirect('album/list');
-                return $this->flashSession->error("Se Elimino Exitosamente");
+                return $this->flashSession->error("Se Elimino Exitosamente el Album");
             }  
         }
         catch (Exception $ex){
@@ -189,7 +229,7 @@ class AlbumController extends Controller{
         ));
         
         if (!$album) {
-            $this->flashSession->error('No Existe el codigo');
+            $this->flashSession->error('No Existe el codigo del Albúm');
             return $this->response->redirect("album");
         }
         
@@ -205,7 +245,7 @@ class AlbumController extends Controller{
         
         
         if (!$album) {
-            $this->flashSession->error('No Existe el codigo');
+            $this->flashSession->error('No Existe el codigo del Albúm');
             return $this->response->redirect("album/list");
         }
         
@@ -238,16 +278,16 @@ class AlbumController extends Controller{
 
                         if (!$resultado){
                             $this->flashSession->error("No se ha podido crear el Albúm, por favor contacta al administrador");
-                            return $this->response->redirect("artist/edit");
+                            return $this->response->redirect("album/edit");
                         }
                         
-                        $this->flashSession->success("Se ha Modificado La Imagen Del  Albúm Exitosamente.");
+                        $this->flashSession->notice("Se ha Modificado La Imagen Del  Albúm Exitosamente.");
                         return $this->response->redirect("album/list");                       
                     }
                 }
             }
             catch (Exception $ex){
-                $this->flashSession->error("Ha Ocurrido Un Error Al Editar El Artista");
+                $this->flashSession->error("Ha Ocurrido Un Error Al Editar El Album");
                 $this->response->redirect('album/changeimage');
             }
         } 
@@ -255,6 +295,12 @@ class AlbumController extends Controller{
     
     private function deleteFolder($dir){
         if (!unlink($dir)){
+            $this->logger->log("No Se pudo eliminar este archivo");
+        }
+    }
+    
+    private function deleteDirectory($dir1){
+        if (!rmdir($dir1)){
             $this->logger->log("No Se pudo eliminar este archivo");
         }
     }

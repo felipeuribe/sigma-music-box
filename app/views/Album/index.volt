@@ -10,13 +10,15 @@
         <br>
         {% for album in album %}            
             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-center">
-                <img class="album-cover" src="{{url('')}}assets/albumes/images/{{album.idAlbum}}/{{album.idAlbum}}.jpg"> 
-                <div class="album-name ">
-                    <strong> {{album.name}}</strong><br>
-                </div>                
+                 <a href="{{url('album/albumsong')}}/{{album.idAlbum}}" > 
+                    <img class="album-cover " src="{{url('')}}assets/albumes/images/{{album.idAlbum}}/{{album.idAlbum}}.jpg">
+                    <strong> {{album.name}}</strong>
+                </a>
             </div> 
                 
         {% endfor %}
+        
+        
      
     </div> 
 {% endblock %}

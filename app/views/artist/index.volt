@@ -8,13 +8,15 @@
     </div> 
     <div class="row">
         <br>
-        {% for artist in artist %}
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-center">
-                <img class="album-cover" src="{{url('')}}assets/artists/images/{{artist.idArtist}}/{{artist.idArtist}}.jpg"> 
-                <div class="artist-name ">
+        {% for artist in artist %}          
+             
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-center  ">            
+                <a href="{{url('artist/artistalbum')}}/{{artist.idArtist}}" > 
+                    <img class="album-cover " src="{{url('')}}assets/artists/images/{{artist.idArtist}}/{{artist.idArtist}}.jpg">
                     <strong> {{artist.name}}</strong>
-                </div>                
-            </div>      
+                </a>
+            </div>  
+                
         {% endfor %}        
     </div> 
 {% endblock %}

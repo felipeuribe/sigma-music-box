@@ -30,11 +30,12 @@
                         <tr>                                  
                             <th>ID </th> 
                             <th>Nombre</th> 
-                            <th>Numero</th>
-                            <th>Año de Creación</th>
+                            <th>Nombre Del Album</th> 
+                            <th>Numero</th>                            
                             <th>Duración</th>
-                            <th>Fecha</th>
-                            <th>Acciones</th>
+                            
+                            <th>Canción</th> 
+                            <th></th>
                         </tr> 
                     </thead> 
                     <tbody>
@@ -42,25 +43,35 @@
                         <tr> 
                             <td>{{song.idSong}}</td> 
                             <td><strong> {{song.name}}</strong></td> 
+                            <td>
+                                 {% for album in albums %}
+                                    {% if album.idAlbum == song.idAlbum %}
+                                        {{album.name}} <br>
+                                    {% endif %}    
+                                {% endfor %}  
+
+                            </td> 
                             <td>{{song.number}}</td> 
-                            <td>{{song.year}}</td> 
-                            <td>{{song.duration}}</td> 
+                            
+                            <td>{{song.duration}}</td>                             
                             <td>
-                                Creado el: {{date('d-M-Y - H:i:s' , gender.createdon)}} 
-                                <br> 
-                                Actualizado el: {{date('d-M-Y - H:i:s' , gender.updatedon)}}
-                            </td> 
-                            <td>
-                                <img class="album-cover-list" src="{{url('')}}assets/genders/images/{{gender.idGender}}/{{gender.idGender}}.jpg">
-                            </td> 
-                            <td>
-                                <a href="{{url('gender/edit')}}/{{gender.idGender}}" class="btn btn-xs btn-primary">
+                                 <audio controls>
+                                <source src="{{url('')}}/assets/music/{{song.idAlbum}}/{{song.idSong}}.mp3" type="audio/mpeg">
+                                </audio>
+                            </td>
+                            <td> 
+                                <a href="{{url('song/changeaudio')}}/{{song.idSong}}" class="btn btn-xs btn-success">
+                                    <span class="fa fa-picture-o"></span>
+                                </a>
+                                <a href="{{url('song/edit')}}/{{song.idSong}}" class="btn btn-xs btn-primary">
                                     <span class="fa fa-pencil"></span>
                                 </a> 
-                                <a href="{{url('gender/confirm')}}/{{gender.idGender}}" class="btn btn-xs btn-danger">
+                                <a href="{{url('song/confirm')}}/{{song.idSong}}" class="btn btn-xs btn-danger">
                                     <span class="fa fa-times"></span>
                                 </a>
                             </td>
+                            
+                            
                         </tr>
                 {% endfor %}
                     </tbody> 

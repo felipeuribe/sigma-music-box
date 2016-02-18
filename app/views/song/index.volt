@@ -1,20 +1,57 @@
 {% extends "templates/template.volt" %}
-{% block content %}  
+{% block content %}
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <h1>Listado de Canciones.</h1>
             <hr>
         </div>
-    </div> 
+    </div>    
+        
+        
     <div class="row">
-        <br>
-        {% for song in song %}
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-center">
-                <img class="album-cover" src="{{url('')}}assets/songs/images/{{song.idSong}}/{{song.idSong}}.jpg"> 
-                <div class="album-name ">
-                    <strong> {{song.name}}</strong>
-                </div>                
-            </div>      
-        {% endfor %}        
-    </div> 
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <br>
+            {{flashSession.output()}}
+        </div>
+    </div>    
+        
+    <div class="row">            
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="table-responsive"> 
+                <table class="table"> 
+                    <thead> 
+                        <tr>                                  
+                            <th>ID </th> 
+                            <th>Nombre</th> 
+                            <th>Nombre Del Album</th> 
+                            <th>Numero</th>                            
+                            <th>Duración</th>
+                            
+                        </tr> 
+                    </thead> 
+                    <tbody>
+                {% for song in song %}
+                        <tr> 
+                            <td>{{song.idSong}}</td> 
+                            <td><strong> {{song.name}}</strong></td> 
+                            <td>
+                                 {% for album in albums %}
+                                    {% if album.idAlbum == song.idAlbum %}
+                                        {{album.name}} <br>
+                                    {% endif %}    
+                                {% endfor %}  
+
+                            </td> 
+                            <td>{{song.number}}</td> 
+                            
+                            <td>{{song.duration}}</td> 
+                            
+                        </tr>
+                {% endfor %}
+                    </tbody> 
+                </table> 
+            </div>
+        </div>
+    </div>
 {% endblock %}
+                     

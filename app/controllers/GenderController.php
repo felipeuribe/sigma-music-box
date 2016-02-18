@@ -54,7 +54,7 @@ class GenderController extends Controller{
                         }
                         
                         $this->flashSession->success("Se ha creado el género exitosamente");
-                        return $this->response->redirect("gender");
+                        return $this->response->redirect("gender/list");
                     }  
                 }
             }
@@ -87,7 +87,7 @@ class GenderController extends Controller{
             }
         } 
         else if (!$gender) {
-            $this->flashSession->error('No Existe el codigo');
+            $this->flashSession->error('No Existe el codigo por favor validar');
             return $this->response->redirect("gender/list");
         }
         
@@ -99,13 +99,17 @@ class GenderController extends Controller{
                 }
                 else {
                     $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/genders/images/" . $gender->idGender . "/" . $gender->idGender . ".jpg";
-                    $this->deleteFolder($dir);                     
+                    $this->deleteFolder($dir);
+
+                    $dir1 = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/genders/images/" . $gender->idGender ;
+                    $this->deleteDirectory($dir1); 
+                    
                     $this->response->redirect('gender/list');
-                    $this->flashSession->error("Se Elimino El Album Exitosamente");
+                    $this->flashSession->error("Se Elimino El Genero Exitosamente");
                 }  
         }
         catch (Exception $ex){
-                $this->flashSession->error("Ha Ocurrido Un Error");
+                $this->flashSession->error("Ha Ocurrido Un Error por favor validar");
                 $this->response->redirect('gender/list');
         }
         
@@ -118,7 +122,7 @@ class GenderController extends Controller{
         ));
         
         if (!$gender) {
-            $this->flashSession->error('No Existe el codigo');
+            $this->flashSession->error('No Existe el codigo por favor validar');
             return $this->response->redirect("gender");
         }
         
@@ -133,7 +137,7 @@ class GenderController extends Controller{
         ));
         
         if (!$gender) {
-            $this->flashSession->error('No Existe el codigo');
+            $this->flashSession->error('No Existe el codigo por favor validar');
             return $this->response->redirect("gender");
         }
         
@@ -156,13 +160,13 @@ class GenderController extends Controller{
                         }
                     }
                     else {                      
-                        $this->flashSession->success("Se ha Modificado El Género Exitosamente");
+                        $this->flashSession->notice("Se ha Modificado El Género Exitosamente");
                         return $this->response->redirect("gender/list"); 
                     }
                 }
             }
             catch (Exception $ex){
-                $this->flashSession->error("Ha Ocurrido Un Error");
+                $this->flashSession->error("Ha Ocurrido Un Error por favor validar");
                 $this->response->redirect('gender/edit');
             }
         }   
@@ -175,7 +179,7 @@ class GenderController extends Controller{
         ));
         
         if (!$gender) {
-            $this->flashSession->error('No Existe el codigo');
+            $this->flashSession->error('No Existe el codigo por favor validar');
             return $this->response->redirect("gender");
         }
         
@@ -214,13 +218,13 @@ class GenderController extends Controller{
                             return $this->response->redirect("gender/new");
                         }
                         
-                        $this->flashSession->success("Se ha creado el género exitosamente");
+                        $this->flashSession->notice("Se ha Modificado la imagen del género exitosamente");
                         return $this->response->redirect("gender/list"); 
                     }
                 }
             }
             catch (Exception $ex){
-                $this->flashSession->error("Ha Ocurrido Un Error");
+                $this->flashSession->error("Ha Ocurrido Un Error por favor validar");
                 $this->response->redirect('gender/edit');
             }
         }   
@@ -228,6 +232,12 @@ class GenderController extends Controller{
     
     private function deleteFolder($dir){
         if (!unlink($dir)){
+            $this->logger->log("No Se pudo eliminar este archivo");
+        }
+    }
+    
+    private function deleteDirectory($dir1){
+        if (!rmdir($dir1)){
             $this->logger->log("No Se pudo eliminar este archivo");
         }
     }
