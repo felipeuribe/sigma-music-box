@@ -11,6 +11,7 @@ class ArtistController extends Controller{
         
         
     }
+
     public function artistalbumAction($idArtist){
                 
         // todos los albumes de un artista 

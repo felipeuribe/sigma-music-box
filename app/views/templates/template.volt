@@ -32,7 +32,7 @@
                                 <ul class="nav nav-pills float-left" role="tablist"> 
                                     <li role="presentation" class="dropdown"> 
                                         <a id="drop4" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
-                                            Felipe Uribe <span class="caret"></span> 
+                                            <span class="caret"></span> 
                                         </a> 
                                         <ul id="menu1" class="dropdown-menu" aria-labelledby="drop4"> 
                                             <li><a href="#">Cerrar Sesión</a></li>

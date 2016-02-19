@@ -50,6 +50,7 @@ class AccountController extends Controller{
                     else {       
                         $user = new User();
                         $user->name = $name;
+                        $user->idRole = 2;
                         $user->idCredentials = $credential->idCredentials;                        
                         $user->lastName = $lastName;
                         $user->email = $email;   
@@ -81,20 +82,24 @@ class AccountController extends Controller{
             $credential = Credentials::findFirst(array(
                 'conditions' => "userName = ?1 ",
                 'bind' => array(1 => $userName)
-            ));        
+            ));
+            
+            if(empty($userName)){
+                    $this->flashSession->error('No ha enviado un usuario , por favor valide la información');
+            }
+            else if(empty($password)){
+                $this->flashSession->error('No ha enviado una Contraseña , por favor valide la información');
+            }
 
-            if ($credential) {
+            else if ($credential) {
 
                 if ($this->hash->checkHash($password, $credential->password)) {   
 
                     $user = User::findFirst(array(
                         'conditions' => "idCredentials = ?1 ",
                         'bind' => array(1 => $credential->idCredentials)
-                    ));
-    //                
-    //                $user.name;
-
-                    $this->flashSession->success("Bienvenido");
+                    ));  
+                    
                     return $this->response->redirect("");
                 }
                 else{
@@ -107,7 +112,6 @@ class AccountController extends Controller{
         }
     }
 
-    
     public function LogoutAction(){
            
     }
