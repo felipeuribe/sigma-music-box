@@ -1,0 +1,67 @@
+*, *:after, *:before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box; 
+}
+html {
+    background: #ccc;
+    font: bold 14px/20px "Trajan Pro", "Times New Roman", Times, serif;
+    color: #430400;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.15); 
+}
+.error-page-wrap {
+    width: 310px;
+    height: 310px;
+    margin: 155px auto; 
+}
+.error-page-wrap:before {
+    box-shadow: 0 0 200px 150px #fff;
+    width: 310px;
+    height: 310px;
+    border-radius: 50%;
+    position: relative;
+    z-index: -1;
+    content: '';
+    display: block; 
+}
+.error-page:before {
+    width: 63px;
+    height: 63px;
+    border-radius: 50%;
+    box-shadow: 3px 25px 0 5px #C95439;
+    content: '';
+    z-index: -1;
+    display: block;
+    position: relative;
+    top: -19px;
+    left: 44px; }
+ 
+.error-page h1 {
+    color: rgba(255, 255, 255, 0.94);
+    font-size: 100px;
+    margin: 65px auto 0 auto;
+    text-shadow: 0px 0 7px rgba(0, 0, 0, 0.5); 
+}
+ 
+.error-back {
+    text-decoration: none;
+    color: #430400;
+    font-size: 15px; 
+}
+.error-page {
+    width: 310px;
+    height: 310px;
+    border-radius: 50%;
+    top: -310px;
+    position: relative;
+    text-align: center;
+    background: #d36242;
+    background: -moz-linear-gradient(top, #d36242 0%, darkred 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d36242), color-stop(100%, darkred));
+    background: -webkit-linear-gradient(top, #d36242 0%, darkred 100%);
+    background: -o-linear-gradient(top, #d36242 0%, darkred 100%);
+    background: -ms-linear-gradient(top, #d36242 0%, darkred 100%);
+    background: linear-gradient(to bottom, #d36242 0%, darkred 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$firstColor', endColorstr='$secondColor',GradientType=0 ); 
+}

@@ -9,7 +9,7 @@ class AlbumController extends Controller{
         $this->view->setVar("album", $album);    
     }
     
-     public function albumsongAction($idAlbum){
+    public function albumsongAction($idAlbum){
          
         // todos los albumes de un artista 
         $albums = Album::find(array(

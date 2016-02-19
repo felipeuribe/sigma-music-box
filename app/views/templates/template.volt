@@ -31,11 +31,11 @@
                             <div class="col-md-6 text-right">                    
                                 <ul class="nav nav-pills float-left" role="tablist"> 
                                     <li role="presentation" class="dropdown"> 
-                                        <a id="drop4" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
-                                            <span class="caret"></span> 
+                                        <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                                           {{user.name}}.{{user.lastName}} <span class="caret"></span> 
                                         </a> 
-                                        <ul id="menu1" class="dropdown-menu" aria-labelledby="drop4"> 
-                                            <li><a href="#">Cerrar Sesión</a></li>
+                                        <ul  class="dropdown-menu" aria-labelledby="drop4"> 
+                                            <li><a href="{{url('account/logout')}}" >Cerrar Sesión</a></li>
                                         </ul> 
                                     </li> 
                                 </ul>

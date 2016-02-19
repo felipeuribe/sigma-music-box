@@ -14,6 +14,7 @@ try {
     $loader->registerDirs(array(
         '../app/controllers/',
         '../app/models/',
+        '../app/plugins/',
     ))->register();
 
     // Create a DI
@@ -96,21 +97,21 @@ try {
         return new \Phalcon\Logger\Adapter\File("../app/logs/debug.log");
     });
     
-//    $di->set('dispatcher', function() use ($di) {
-//
-//       $eventsManager = $di->getShared('eventsManager');
-//
-//       $security = new \Security($di);
-//       /**
-//        * We listen for events in the dispatcher using the Security plugin
-//        */
-//       $eventsManager->attach('dispatch', $security);
-//
-//       $dispatcher = new \Phalcon\Mvc\Dispatcher();
-//       $dispatcher->setEventsManager($eventsManager);
-//
-//       return $dispatcher;
-//    });
+    $di->set('dispatcher', function() use ($di) {
+
+       $eventsManager = $di->getShared('eventsManager');
+
+       $security = new \Security($di);
+       /**
+        * We listen for events in the dispatcher using the Security plugin
+        */
+       $eventsManager->attach('dispatch', $security);
+
+       $dispatcher = new \Phalcon\Mvc\Dispatcher();
+       $dispatcher->setEventsManager($eventsManager);
+
+       return $dispatcher;
+    });
     
     // Handle the request
     $application = new Application($di);

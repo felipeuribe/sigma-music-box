@@ -101,6 +101,13 @@ class AccountController extends Controller{
                         'bind' => array(1 => $credential->idCredentials)
                     ));  
                     
+                    if ($user) {
+                        $this->session->set("authenticated", true);
+                        $this->session->set("idUser", $user->idUser);
+                    }
+                   
+                    
+                    
                     return $this->response->redirect("");
                 }
                 else{
@@ -113,8 +120,10 @@ class AccountController extends Controller{
         }
     }
 
-    public function LogoutAction(){
-           
+    public function logoutAction(){
+        $this->session->destroy("authenticated");
+        $this->session->destroy("idUser");
+        return $this->response->redirect("");   
     }
     
     
