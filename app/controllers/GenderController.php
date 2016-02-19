@@ -3,12 +3,12 @@ use Phalcon\Mvc\Controller;
 
 class GenderController extends Controller{
     
-    public function IndexAction(){
+    public function indexAction(){
         $gender = Gender::find();
         $this->view->setVar("gender", $gender);     
     }
     
-    public function NewAction(){
+    public function newAction(){
         if ($this->request->isPost()) {            
             try{
                 $permitidos = array("image/jpg");
@@ -65,7 +65,7 @@ class GenderController extends Controller{
         }
     }
     
-    public function ListAction(){
+    public function listAction(){
         $gender = Gender::find();
         $this->view->setVar("gender", $gender); 
     }
@@ -99,10 +99,10 @@ class GenderController extends Controller{
                 }
                 else {
                     $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/genders/images/" . $gender->idGender . "/" . $gender->idGender . ".jpg";
-                    $this->deleteFolder($dir);
+                    $this->deletefolder($dir);
 
                     $dir1 = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/genders/images/" . $gender->idGender ;
-                    $this->deleteDirectory($dir1); 
+                    $this->deletedirectory($dir1); 
                     
                     $this->response->redirect('gender/list');
                     $this->flashSession->error("Se Elimino El Genero Exitosamente");
@@ -207,7 +207,7 @@ class GenderController extends Controller{
                     }
                     else {
                         $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/genders/images/" . $gender->idGender . "/" . $gender->idGender . ".jpg";
-                        $this->deleteFolder($dir);
+                        $this->deletefolder($dir);
                         
                         $ruta = $dir .  ".jpg";
 
@@ -230,13 +230,13 @@ class GenderController extends Controller{
         }   
     }
     
-    private function deleteFolder($dir){
+    private function deletefolder($dir){
         if (!unlink($dir)){
             $this->logger->log("No Se pudo eliminar este archivo");
         }
     }
     
-    private function deleteDirectory($dir1){
+    private function deletedirectory($dir1){
         if (!rmdir($dir1)){
             $this->logger->log("No Se pudo eliminar este archivo");
         }

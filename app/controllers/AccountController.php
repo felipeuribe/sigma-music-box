@@ -3,7 +3,8 @@
 use Phalcon\Mvc\Controller;
 
 class AccountController extends Controller{
-    public function IndexAction(){
+    
+    public function indexAction(){
            
     }
     public function signupAction(){
@@ -74,7 +75,7 @@ class AccountController extends Controller{
         }           
     }
     
-    public function LoginAction(){
+    public function loginAction(){
         if ($this->request->isPost()) {
             $userName = $this->request->getPost('userName');
             $password = $this->request->getPost('password');

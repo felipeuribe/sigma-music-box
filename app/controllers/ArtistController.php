@@ -4,12 +4,9 @@ use Phalcon\Mvc\Controller;
 
 class ArtistController extends Controller{
     
-    public function IndexAction(){
+    public function indexAction(){
         $artist = Artist::find();
-        $this->view->setVar("artist", $artist);
-        
-        
-        
+        $this->view->setVar("artist", $artist);    
     }
 
     public function artistalbumAction($idArtist){
@@ -35,7 +32,7 @@ class ArtistController extends Controller{
         $this->view->setVar("arraySongs", $songs);
     }
     
-    public function ListAction(){
+    public function listAction(){
         $artists = Artist::find();
         $this->view->setVar("artists", $artists); 
         
@@ -273,10 +270,10 @@ class ArtistController extends Controller{
             }
             else {
                 $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/artists/images/" . $artist->idArtist . "/" . $artist->idArtist . ".jpg";
-                $this->deleteFolder($dir);
+                $this->deletefolder($dir);
                 
                 $dir1 = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/artists/images/" . $artist->idArtist ;
-                $this->deleteDirectory($dir1);
+                $this->deletedirectory($dir1);
                 
                 $this->response->redirect('artist/list');
                 $this->flashSession->error("Se Eliminó El Artista Exitosamente"); 
@@ -322,7 +319,7 @@ class ArtistController extends Controller{
                     }
                     else {
                         $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/artists/images/" . $artist->idArtist . "/" . $artist->idArtist . ".jpg";
-                        $this->deleteFolder($dir);
+                        $this->deletefolder($dir);
                         
                         $ruta = $dir .  ".jpg";
 
@@ -347,13 +344,13 @@ class ArtistController extends Controller{
         } 
     }
     
-    private function deleteFolder($dir){
+    private function deletefolder($dir){
         if (!unlink($dir)){
             $this->logger->log("No Se pudo eliminar este archivo");
         }
     }
     
-    private function deleteDirectory($dir1){
+    private function deletedirectory($dir1){
         if (!rmdir($dir1)){
             $this->logger->log("No Se pudo eliminar este archivo");
         }

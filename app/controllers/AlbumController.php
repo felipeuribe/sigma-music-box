@@ -4,7 +4,7 @@ use Phalcon\Mvc\Controller;
 
 class AlbumController extends Controller{
     
-    public function IndexAction(){
+    public function indexAction(){
         $album = Album::find();        
         $this->view->setVar("album", $album);    
     }
@@ -33,7 +33,7 @@ class AlbumController extends Controller{
         
     }
     
-    public function ListAction(){
+    public function listAction(){
         $album = Album::find();
         $this->view->setVar("album", $album); 
         
@@ -207,10 +207,10 @@ class AlbumController extends Controller{
             }
             else {
                 $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/albumes/images/" . $album->idAlbum . "/" . $album->idAlbum . ".jpg";
-                $this->deleteFolder($dir);
+                $this->deletefolder($dir);
                 
                 $dir1 = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/albumes/images/" . $album->idAlbum ;
-                $this->deleteDirectory($dir1);
+                $this->deletedirectory($dir1);
                     
                 $this->response->redirect('album/list');
                 return $this->flashSession->error("Se Elimino Exitosamente el Album");
@@ -270,7 +270,7 @@ class AlbumController extends Controller{
                     }
                     else {
                         $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/albumes/images/" . $album->idAlbum . "/" . $album->idAlbum . ".jpg";
-                        $this->deleteFolder($dir);
+                        $this->deletefolder($dir);
                         
                         $ruta = $dir .  ".jpg";
 
@@ -293,13 +293,13 @@ class AlbumController extends Controller{
         } 
     }
     
-    private function deleteFolder($dir){
+    private function deletefolder($dir){
         if (!unlink($dir)){
             $this->logger->log("No Se pudo eliminar este archivo");
         }
     }
     
-    private function deleteDirectory($dir1){
+    private function deletedirectory($dir1){
         if (!rmdir($dir1)){
             $this->logger->log("No Se pudo eliminar este archivo");
         }

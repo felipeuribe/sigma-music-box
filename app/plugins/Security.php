@@ -22,7 +22,7 @@ class Security extends Plugin {
 
             //Registrando recursos
             $resources = array(
-                'dashboard' => array('read'),
+                'gender' => array('add', 'delete', 'update', 'read'),
                 'importdata' => array('read','create','update'),
                 'user' => array('read','create','update'),              
                 'data' => array('read', 'download'),                
@@ -34,27 +34,32 @@ class Security extends Plugin {
             }
             
             // admin
-            $acl->allow("admin", "dashboard", "read");           
-            $acl->allow("admin", "importdata", "read");           
-            $acl->allow("admin", "importdata", "create");
-            $acl->allow("admin", "importdata", "update");
-            $acl->allow("admin", "user", "read");
-            $acl->allow("admin", "user", "create");
-            $acl->allow("admin", "user", "update");
-            $acl->allow("admin", "data", "read");
-            $acl->allow("admin", "data", "download");
-            $acl->allow("admin", "payment", "read");
-            $acl->allow("admin", "payment", "download");
+            $acl->allow("admin", "gender", "add");           
+            $acl->allow("admin", "gender", "delete");           
+            $acl->allow("admin", "gender", "read");
+            $acl->allow("admin", "gender", "update");
+            $acl->allow("admin", "artist", "add");           
+            $acl->allow("admin", "artist", "delete");           
+            $acl->allow("admin", "artist", "read");
+            $acl->allow("admin", "artist", "update");
+            $acl->allow("admin", "album", "add");           
+            $acl->allow("admin", "album", "delete");           
+            $acl->allow("admin", "album", "read");
+            $acl->allow("admin", "album", "update");
+            $acl->allow("admin", "song", "add");           
+            $acl->allow("admin", "song", "delete");           
+            $acl->allow("admin", "song", "read");
+            $acl->allow("admin", "song", "update");
+            $acl->allow("admin", "tools", "read");
+            $acl->allow("admin", "player", "play");
             
             // user
-            $acl->allow("user", "dashboard", "read");   
-            $acl->allow("user", "user", "read");
-            $acl->allow("user", "user", "create");
-            $acl->allow("user", "user", "update");
-            $acl->allow("user", "data", "read");
-            $acl->allow("user", "data", "download");
-            $acl->allow("user", "payment", "read");
-            $acl->allow("user", "payment", "download");
+            $acl->allow("user", "gender", "read"); 
+            $acl->allow("user", "artist", "read"); 
+            $acl->allow("user", "album", "read"); 
+            $acl->allow("user", "song", "read"); 
+            $acl->allow("user", "player", "play"); 
+            
 
             //$this->cache->save('acl-cache', $acl);
         }
@@ -64,6 +69,62 @@ class Security extends Plugin {
         
         return $acl;
     }
+    
+    protected function getControllerMap() {
+        if (!$map) {
+            $map = array(
+            /* Public resources */    
+                /* Error views */
+                'error::index' => array(),
+                /* Session */
+                'account::signup' => array(),
+                'account::logout' => array(),
+                'account::login' => array(),
+                
+            /* Private resources */
+                /* Dashboard */
+                'artist::new' => array('artist' => array('add')),
+                'artist::delete' => array('artist' => array('delete')),                
+                'artist::index' => array('artist' => array('read')),
+                'artist::edit' => array('artist' => array('update')),
+                
+                'artist::artistalbum' => array('artist' => array('read')),
+                'artist::list' => array('artist' => array('read')),  
+                'artist::confirm' => array('artist' => array('delete')),                
+                'artist::changeimage' => array('artist' => array('update')),
+                'artist::deletefolder' => array('artist' => array('delete')),
+                'artist::deletedirectory' => array('artist' => array('delete')),
+                
+                
+                'gender::new' => array('gender' => array('add')),
+                'gender::delete' => array('gender' => array('delete')),
+                'gender::index' => array('gender' => array('read')),
+                'gender::edit' => array('gender' => array('update')),
+                
+                'album::new' => array('album' => array('add')),
+                'album::delete' => array('album' => array('delete')),
+                'album::index' => array('album' => array('read')),
+                'album::edit' => array('album' => array('update')),
+                
+                'song::new' => array('song' => array('add')),
+                'song::delete' => array('song' => array('delete')),
+                'song::index' => array('song' => array('read')),
+                'song::edit' => array('song' => array('update')),
+                
+                'tools::index' => array('tools' => array('read')),               
+                
+                'index::index' => array('dashboard' => array('read')),
+                
+                
+                
+            );
+            
+            //$this->cache->save('controllermap-cache', $map);
+        }
+        
+        return $map;
+    }
+    
     
     public function beforeExecuteRoute(Event $event, Dispatcher $dispatcher) {
         // ...
