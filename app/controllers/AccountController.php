@@ -70,39 +70,41 @@ class AccountController extends Controller{
                 $this->flashSession->error("Ha Ocurrido Un Error");
                 $this->response->redirect('account/signup');
             }
-        }
-           
+        }           
     }
     
     public function LoginAction(){
-        $userName = $this->request->getPost('userName');
-        $password = $this->request->getPost('password');
+        if ($this->request->isPost()) {
+            $userName = $this->request->getPost('userName');
+            $password = $this->request->getPost('password');
 
-        $credential = Credentials::findFirst(array(
-                    'conditions' => "userName = ?1 ",
-                    'bind' => array(1 => $userName->idCredentials)
-                 ));
-        
-        
-            
-        if ($credential) {
-            
-            if ($this->hash->checkHash($password, $credential->password)) { 
-                $user = User::findFirst(array(
-                    'conditions' => "idCredentials = ?1 ",
-                    'bind' => array(1 => $credential->idCredentials)
-                 ));                
-                $user->name;
-                
-                $this->flashSession->success("Bienvenido");
-                return $this->response->redirect("account/login");
+            $credential = Credentials::findFirst(array(
+                'conditions' => "userName = ?1 ",
+                'bind' => array(1 => $userName)
+            ));        
+
+            if ($credential) {
+
+                if ($this->hash->checkHash($password, $credential->password)) {   
+
+                    $user = User::findFirst(array(
+                        'conditions' => "idCredentials = ?1 ",
+                        'bind' => array(1 => $credential->idCredentials)
+                    ));
+    //                
+    //                $user.name;
+
+                    $this->flashSession->success("Bienvenido");
+                    return $this->response->redirect("");
+                }
+                else{
+                   $this->flashSession->error("La Contraseña es Incorrecta");
+                }
+            } 
+            else {            
+                $this->flashSession->error("El nombre de usuario es incorrecto por favor validar la informacion");
             }
-        } 
-        else {
-            
-            $this->flashSession->error("Incorrecto los datos por favor Validar la informacion");
-            return $this->response->redirect("account/login");
-        }           
+        }
     }
 
     
