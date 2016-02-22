@@ -7,7 +7,9 @@ class ErrorController extends Controller{
     public function indexAction(){
            
     }
-    
+    public function forbiddenAction(){
+           
+    }
     
     
     

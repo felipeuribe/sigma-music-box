@@ -16,9 +16,6 @@
                 </a>
             </div> 
                 
-        {% endfor %}
-        
-        
-     
+        {% endfor %}    
     </div> 
 {% endblock %}

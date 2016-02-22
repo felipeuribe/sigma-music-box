@@ -26,6 +26,7 @@
                             <th>Nombre Del Album</th> 
                             <th>Numero</th>                            
                             <th>Duración</th>
+                            <th>Cancion</th>
                             
                         </tr> 
                     </thead> 
@@ -45,6 +46,11 @@
                             <td>{{song.number}}</td> 
                             
                             <td>{{song.duration}}</td> 
+                            <td>
+                                 <audio controls>
+                                <source src="{{url('')}}/assets/music/{{song.idAlbum}}/{{song.idSong}}.mp3" type="audio/mpeg">
+                                </audio>
+                            </td>
                             
                         </tr>
                 {% endfor %}

@@ -97,8 +97,9 @@ try {
         return new \Phalcon\Logger\Adapter\File("../app/logs/debug.log");
     });
     
+    
+    //Módulo que se ejecuta antes de cargar cualquier controlador
     $di->set('dispatcher', function() use ($di) {
-
        $eventsManager = $di->getShared('eventsManager');
 
        $security = new \Security($di);
@@ -111,6 +112,14 @@ try {
        $dispatcher->setEventsManager($eventsManager);
 
        return $dispatcher;
+    });
+    
+    //Módulo de las listas de control de permitidos ACL
+    $di->setShared('acl', function(){
+        $acl = new \Phalcon\Acl\Adapter\Memory();
+        $acl->setDefaultAction(\Phalcon\Acl::DENY);
+
+        return $acl;
     });
     
     // Handle the request

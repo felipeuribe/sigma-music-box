@@ -28,17 +28,17 @@
                                     <i class="fa fa-play-circle"></i> Sigma Music Box
                                 </a>
                             </div>    
-                            <div class="col-md-6 text-right">                    
-                                <ul class="nav nav-pills float-left" role="tablist"> 
-                                    <li role="presentation" class="dropdown"> 
-                                        <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
-                                           {{user.name}}.{{user.lastName}} <span class="caret"></span> 
-                                        </a> 
-                                        <ul  class="dropdown-menu" aria-labelledby="drop4"> 
-                                            <li><a href="{{url('account/logout')}}" >Cerrar Sesión</a></li>
-                                        </ul> 
-                                    </li> 
-                                </ul>
+                            <div class="col-md-6 text-right">
+                                <div class=" btn-group">
+                                      <button type="button" class="btn btn-danger">{{user.name}}.{{user.lastName}}</button>
+                                      <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="caret"></span>                                        
+                                      </button>
+                                      <ul class="dropdown-menu">
+                                        <li><a href="{{url('account/logout')}}">Cerrar Sesión</a></li>
+                                       
+                                      </ul>
+                                </div>
                             </div>
                         </div>   
                     </div>    
@@ -46,7 +46,8 @@
                     {% block content %}
 
                     {% endblock %}
-
+                    
+                        
                     <div class="row ">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="row  footer-menu">
@@ -57,7 +58,7 @@
                                 <div class="col-md-3 btn btn-primaria"><a href="{{url('tools/index')}}"> configuración </a></div>
                             </div> 
                         </div>   
-                    </div>    
+                    </div> 
                 </div>
             </div>
         </div>

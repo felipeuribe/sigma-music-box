@@ -206,7 +206,7 @@ class GenderController extends Controller{
                         }
                     }
                     else {
-                        $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/genders/images/" . $gender->idGender . "/" . $gender->idGender . ".jpg";
+                        $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/genders/images/" . $gender->idGender . "/" . $gender->idGender ;
                         $this->deletefolder($dir);
                         
                         $ruta = $dir .  ".jpg";

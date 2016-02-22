@@ -26,7 +26,7 @@
                 </div>
                 <div class="form-group">
                   <label>Correo Electrónico del Usuario</label>
-                  <input type="text" name="email" class="form-control" placeholder="Correo@gmail.com" >
+                  <input type="email" name="email" class="form-control" placeholder="Correo@gmail.com" >
                 </div>
                 <div class="form-group">
                   <label>Crea Una Contraseña</label>

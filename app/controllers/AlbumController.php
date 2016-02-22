@@ -194,24 +194,39 @@ class AlbumController extends Controller{
             $this->flashSession->error('No Existe el codigo del Albúm');
             return $this->response->redirect("album");
         }        
-        try {            
+        try {
+            
+            $songs = Song::find(array(
+                'conditions' => "idAlbum = ?1 ",
+                'bind' => array(1 => $album->idAlbum)
+            ));
+
+            foreach ($songs as $song) {
+                if (!$song->delete()) {
+                    foreach ($song->getMessages() as $msg) {
+                        $this->logger->log($msg);        
+                    }
+                }  
+                $dirsong = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/music/" . $song->idAlbum . "/" . $song->idSong . ".mp3";
+                $this->deletefoldersong($dirsong); 
+
+                $dirsong1 = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/music/" . $song->idAlbum ;
+                $this->deletedirectorysong($dirsong1);                
+            }
+
             if (!$album->delete()) {
                 foreach ($album->getMessages() as $msg) {
                     $this->logger->log($msg);        
                 }
-            }
-            else if (!$song->delete()) {
-                foreach ($song->getMessages() as $msg) {
-                    $this->logger->log($msg);        
-                }
-            }
-            else {
+            }  
+            else {                
+                
                 $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/albumes/images/" . $album->idAlbum . "/" . $album->idAlbum . ".jpg";
                 $this->deletefolder($dir);
                 
                 $dir1 = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/albumes/images/" . $album->idAlbum ;
                 $this->deletedirectory($dir1);
-                    
+                
                 $this->response->redirect('album/list');
                 return $this->flashSession->error("Se Elimino Exitosamente el Album");
             }  
@@ -269,7 +284,7 @@ class AlbumController extends Controller{
                         }
                     }
                     else {
-                        $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/albumes/images/" . $album->idAlbum . "/" . $album->idAlbum . ".jpg";
+                        $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/albumes/images/" . $album->idAlbum . "/" . $album->idAlbum ;
                         $this->deletefolder($dir);
                         
                         $ruta = $dir .  ".jpg";
@@ -301,6 +316,18 @@ class AlbumController extends Controller{
     
     private function deletedirectory($dir1){
         if (!rmdir($dir1)){
+            $this->logger->log("No Se pudo eliminar este archivo");
+        }
+    }
+    
+    private function deletefoldersong($dirsong){
+        if (!unlink($dirsong)){
+            $this->logger->log("No Se pudo eliminar este archivo");
+        }
+    }
+    
+    private function deletedirectorysong($dirsong1){
+        if (!rmdir($dirsong1)){
             $this->logger->log("No Se pudo eliminar este archivo");
         }
     }

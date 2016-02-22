@@ -63,8 +63,8 @@ class AccountController extends Controller{
                                 $this->logger->log($msg);        
                             }
                         }                        
-                        $this->flashSession->success("Se ha Confirmado su Inscripcion con Exito");
-                        $this->response->redirect('account/signup');
+                        $this->flashSession->success("Se ha Registrado Con Exito El Nuevo Usuario");
+                        $this->response->redirect('account/login');
                     }  
                 }
             }
