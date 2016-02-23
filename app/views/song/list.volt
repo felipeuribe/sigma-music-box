@@ -61,7 +61,7 @@
                             </td>
                             <td> 
                                 <a href="{{url('song/changeaudio')}}/{{song.idSong}}" class="btn btn-xs btn-success">
-                                    <span class="fa fa-picture-o"></span>
+                                    <span class="fa fa-music"></span>
                                 </a>
                                 <a href="{{url('song/edit')}}/{{song.idSong}}" class="btn btn-xs btn-primary">
                                     <span class="fa fa-pencil"></span>

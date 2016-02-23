@@ -135,11 +135,8 @@ class SongController extends Controller{
         if (!$song) {
             $this->flashSession->error('No Existe el codigo');
             return $this->response->redirect("song");
-        }
-        
+        }        
         $this->view->setVar("song", $song);
-        
-        
         
         if ($this->request->isPost()) {
             
@@ -162,6 +159,7 @@ class SongController extends Controller{
                     $this->flashSession->error('No ha enviado un Numero válido');
                 }
                 else {
+                    $dir1 = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/music/". $song->idAlbum . "/{$song->idSong}.mp3";  
                     $song->name = $name;
                     $song->number = $number;
                     
@@ -190,6 +188,16 @@ class SongController extends Controller{
                         }
                     }
                     else {
+                        $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/music/". $song->idAlbum . "/";
+
+                        if(!file_exists($dir)) {          
+                            if(!mkdir($dir, 0777, true)) {
+                                $this->flashSession->error("No se ha podido crear el directorio del género, por favor contacta al administrador");
+                                return $this->response->redirect("song/list");
+                            } 
+                        }  
+                        $dir = $dir . "{$song->idSong}.mp3";                        
+                        rename($dir1,$dir);
                         
                         $this->response->redirect('song/list');
                         $this->flashSession->notice("Se Modificado Exitosamente la Cancion");
@@ -224,10 +232,7 @@ class SongController extends Controller{
             
                     
             $durSecAlbum = ($album->duration == 0 || $album->duration == null ? 0 : $this->convertTimeToSeconds($album->duration));
-            $durSecSong1 = ($song->duration == 0 || $song->duration == null ? 0 : $this->convertTimeToSeconds($song->duration));
-
-            $this->logger->log("final 2 {$durSecAlbum}");
-            $this->logger->log("final 3 {$durSecSong1}");                     
+            $durSecSong1 = ($song->duration == 0 || $song->duration == null ? 0 : $this->convertTimeToSeconds($song->duration));      
 
             $sumSecFinalDur = $durSecAlbum - $durSecSong1;
 
@@ -340,6 +345,12 @@ class SongController extends Controller{
     
     private function deletedirectory($dir1){
         if (!rmdir($dir1)){
+            $this->logger->log("No Se pudo eliminar este archivo");
+        }
+    }
+    
+    private function deletedirec($di){
+        if (!rmdir($di)){
             $this->logger->log("No Se pudo eliminar este archivo");
         }
     }
