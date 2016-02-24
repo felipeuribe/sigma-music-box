@@ -38,9 +38,7 @@ class AlbumController extends Controller{
         $this->view->setVar("album", $album); 
         
         $artists = Artist::find();
-        $this->view->setVar("artists", $artists); 
-        
-       
+        $this->view->setVar("artists", $artists);  
     }
     
     public function newAction(){ 
