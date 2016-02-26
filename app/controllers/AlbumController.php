@@ -126,6 +126,7 @@ class AlbumController extends Controller{
             'bind' => array(1 => $idAlbum)
         ));
         
+        
         if (!$album) {
             $this->flashSession->error('No Existe el codigo valide La Informacion');
             return $this->response->redirect("album/list");
@@ -157,12 +158,19 @@ class AlbumController extends Controller{
                     $album->createdon = time();
                     $album->updatedon = time();
                     
+                    
+                    
                     if (!$album->save()) {
                         foreach ($album->getMessages() as $msg) {
                             $this->logger->log($msg);        
                         }
                     }
                     else {
+                        
+                        $songs = Song::find(array("conditions" => "idAlbum = ?0", "bind" => array($album->idAlbum)));
+                        $album->numberTracks = count($songs);
+                        $album->save();
+                        
                         $this->response->redirect('album/list');
                         $this->flashSession->notice("Se Modificado El Album  Exitosamente");
                     }

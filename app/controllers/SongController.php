@@ -18,6 +18,8 @@ class SongController extends Controller{
 
         $albums = Album::find();
         $this->view->setVar("albums", $albums); 
+                
+        
         
     }
     
@@ -130,7 +132,7 @@ class SongController extends Controller{
         $song = Song::findFirst(array(
             'conditions' => "idSong = ?1 ",
             'bind' => array(1 => $idSong)
-        ));        
+        ));
         
         if (!$song) {
             $this->flashSession->error('No Existe el codigo');
@@ -176,7 +178,7 @@ class SongController extends Controller{
                             $this->logger->log($msg);        
                         }
                     }
-                    else {   
+                    else { 
                                             
                         // resta la duracion al album antiguo
                         $durSecAlbum1 = ($olddurationalbum == 0 || $olddurationalbum == null ? 0 : $this->convertTimeToSeconds($olddurationalbum));
