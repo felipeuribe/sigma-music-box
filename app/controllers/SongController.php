@@ -168,41 +168,40 @@ class SongController extends Controller{
                     $song->name = $name;
                     $song->number = $number;                    
                     $song->updatedon = time();                    
-                    $song->idAlbum = $album;                   
+                    $song->idAlbum = $album;
+                    $song->duration = $duration;
                     
-                    $album = Album::findFirst(array('conditions' => 'idAlbum = ?0', 'bind' => array($album)));
-                    $durSecSong = $this->convertTimeToSeconds($duration);
-                    $durSecAlbum = ($album->duration == 0 || $album->duration == null ? 0 : $this->convertTimeToSeconds($album->duration));
-                    $durSecSong1 = ($song->duration == 0 || $song->duration == null ? 0 : $this->convertTimeToSeconds($song->duration));
-                    
-                    $Subtraction = $durSecAlbum - $durSecSong1;                     
-                    $sumSecFinalDur = $Subtraction + $durSecSong ;                    
-                    $durationAlbum = $this->convertSecondsToTime($sumSecFinalDur);
-
-                    $song->duration = $duration;                    
                     if (!$song->save()) {
                         foreach ($song->getMessages() as $msg) {
                             $this->logger->log($msg);        
                         }
                     }
-                    else { 
+                    else {   
+                                            
+                        // resta la duracion al album antiguo
+                        $durSecAlbum1 = ($olddurationalbum == 0 || $olddurationalbum == null ? 0 : $this->convertTimeToSeconds($olddurationalbum));
+                        $durSecSong11 = ($oldduration == 0 || $oldduration == null ? 0 : $this->convertTimeToSeconds($oldduration));      
+                        $sumSecFinalDur1 = $durSecAlbum1 - $durSecSong11;
+                        $durationAlbum1 = $this->convertSecondsToTime($sumSecFinalDur1);
+
+                        $album1->duration = $durationAlbum1;
+                        $songs = Song::find(array("conditions" => "idAlbum = ?0", "bind" => array($oldalbum))); 
+                        $album1->numberTracks = count($songs);
+                        $album1->save();
+                        
+                        // suma la duracion al nuevo album
+                        $album = Album::findFirst(array('conditions' => 'idAlbum = ?0', 'bind' => array($album)));
+                        $durSecSong = $this->convertTimeToSeconds($duration);
                         $durSecAlbum = ($album->duration == 0 || $album->duration == null ? 0 : $this->convertTimeToSeconds($album->duration));
                         $durSecSong1 = ($song->duration == 0 || $song->duration == null ? 0 : $this->convertTimeToSeconds($song->duration));      
-
                         $sumSecFinalDur = $durSecAlbum + $durSecSong1;
                         $durationAlbum = $this->convertSecondsToTime($sumSecFinalDur);
-                        
-                        $durSecAlbum2 = ($album->duration == 0 || $album->duration == null ? 0 : $this->convertTimeToSeconds($album->duration));
-                        $durSecSong12 = ($song->duration == 0 || $song->duration == null ? 0 : $this->convertTimeToSeconds($song->duration));      
-                        $sumSecFinalDur2 = $durSecAlbum2 + $durSecSong12;
-                        $durationAlbum2 = $this->convertSecondsToTime($sumSecFinalDur2);                        
-                        $album->duration = $durationAlbum2;
-                        
                         
                         $album->duration = $durationAlbum;                    
                         $songs = Song::find(array("conditions" => "idAlbum = ?0", "bind" => array($album->idAlbum))); 
                         $album->numberTracks = count($songs);
                         $album->save();
+                        
                         
                         $dir = "C:/Users/felipe.uribe.SIGMAMOVIL.000/Documents/NetbeansProjects/sigmamusicbox/public/assets/music/". $song->idAlbum . "/";
                         if(!file_exists($dir)) {          
@@ -215,31 +214,9 @@ class SongController extends Controller{
                         rename($dir1,$dir);                        
                         $this->response->redirect('song/list');
                         $this->flashSession->notice("Se Modificado Exitosamente la Cancion"); 
-                    }                         
-                }              
-//                        $durSecAlbum2 = ($album->duration == 0 || $album->duration == null ? 0 : $this->convertTimeToSeconds($album->duration));
-//                        $durSecSong12 = ($song->duration == 0 || $song->duration == null ? 0 : $this->convertTimeToSeconds($song->duration));      
-//
-//                        $sumSecFinalDur2 = $durSecAlbum2 + $durSecSong12;
-//                        $durationAlbum2 = $this->convertSecondsToTime($sumSecFinalDur2); 
-//                        
-//                        $album->duration = $durationAlbum2;                    
-//                        $songs = Song::find(array("conditions" => "idAlbum = ?0", "bind" => array($album->idAlbum))); 
-//                        $album->numberTracks = count($songs);
-//                        $album->save();
-                
-                $durSecAlbum1 = ($olddurationalbum == 0 || $olddurationalbum == null ? 0 : $this->convertTimeToSeconds($olddurationalbum));
-                $durSecSong11 = ($oldduration == 0 || $oldduration == null ? 0 : $this->convertTimeToSeconds($oldduration));      
-
-                $sumSecFinalDur1 = $durSecAlbum1 - $durSecSong11;
-                $durationAlbum1 = $this->convertSecondsToTime($sumSecFinalDur1);
-                
-                $album1->duration = $durationAlbum1;
-                $songs = Song::find(array("conditions" => "idAlbum = ?0", "bind" => array($oldalbum))); 
-                $album1->numberTracks = count($songs);
-                $album1->save();
-                
-            }            
+                        }                         
+                    }
+                }            
             catch (Exception $ex){
                 $this->flashSession->error("Ha Ocurrido Un Error");
                 $this->response->redirect('song/edit');
